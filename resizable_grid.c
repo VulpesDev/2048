@@ -1,7 +1,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 
-void resize_grid() {
+void draw_board() {
     int height, width;
     getmaxyx(stdscr, height, width);
 
@@ -39,6 +39,10 @@ void resize_grid() {
                 int next_y = cell_height / 2 + (i + 1) * cell_height;
                 mvvline(y + 1, x, '|', next_y - y - 1);
             }
+            if (i < 3 && j < 3){
+                int number = i * 3 + j + 1; // Calculate the number (1 to 9)
+                mvprintw(y + cell_height / 2, x + cell_width / 2 - 1, "%d", number);
+            }
         }
     }
 
@@ -57,9 +61,9 @@ int main() {
     keypad(stdscr, TRUE); // Enable special keys
     curs_set(FALSE); // Don't display cursor
 
-    // Call resize_grid periodically
+    // Call draw_board periodically
     while(1) {
-        resize_grid();
+        draw_board();
         napms(100); // Wait for 100 milliseconds before checking again
         if (getch() == 'q') break;
     }
