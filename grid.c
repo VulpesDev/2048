@@ -1,3 +1,5 @@
+
+
 #include <ncurses.h>
 #include <stdlib.h>
 #include <time.h>
@@ -46,7 +48,7 @@ int main() {
 
     int board[BOARD_SIZE][BOARD_SIZE] = {0};
 
-    // while (1) {
+    while (1) {
         clear();
         init_board(board);
         draw_board(board);
@@ -66,6 +68,9 @@ int main() {
             case KEY_RIGHT:
                 // Move tiles right
                 break;
+            case 'q':
+                endwin();
+                return 0;
             default:
                 break;
         }
@@ -75,7 +80,7 @@ int main() {
         // Add new tiles to the board
 
         refresh();
-    // }
+    }
     getch();
     endwin();
     return 0;

@@ -45,9 +45,6 @@ void draw_board() {
             }
         }
     }
-
-
-
     // Refresh the screen to show the updated grid
     refresh();
 }
