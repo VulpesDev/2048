@@ -1,15 +1,28 @@
 #include <ncurses.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 
 #define BOARD_SIZE 4
+int	start_game(int board[][BOARD_SIZE]);
+void init_board(int board[][BOARD_SIZE]);
+void draw_board(int board[][BOARD_SIZE]) ;
+
+
+#define RIGHT_X 3
+#define LEFT_X 0
+#define UP_Y 0
+#define DOWN_Y 3
+
+
 
 typedef struct s_vector {
     int x;
     int y;
 } t_vector;
 
-void init_board(int board[][BOARD_SIZE]) {
+void init_board(int board[][BOARD_SIZE]) 
+{
     srand(time(NULL));
     
     t_vector sq1, sq2;
@@ -29,7 +42,8 @@ void init_board(int board[][BOARD_SIZE]) {
     }
 }
 
-void draw_board(int board[][BOARD_SIZE]) {
+void draw_board(int board[][BOARD_SIZE]) 
+{
     clear();
     for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -39,23 +53,14 @@ void draw_board(int board[][BOARD_SIZE]) {
     refresh();
 }
 
-int main() {
-    initscr();
-    raw();
-    noecho();
 
-    int board[BOARD_SIZE][BOARD_SIZE] = {0};
+int	start_game(int board[][BOARD_SIZE])
+{
 
-    // while (1) {
-        clear();
-        init_board(board);
-        draw_board(board);
-        
-        
         int ch = getch();
         switch (ch) {
             case KEY_UP:
-                // Move tiles up
+                search_tiles(board, 0, UP_Y);
                 break;
             case KEY_DOWN:
                 // Move tiles down
@@ -68,7 +73,25 @@ int main() {
                 break;
             default:
                 break;
-        }
+		}
+	return (0);
+}
+
+
+int main()
+{
+    initscr();
+    raw();
+    noecho();
+
+    int board[BOARD_SIZE][BOARD_SIZE] = {0};
+
+    // while (1) {
+        clear();
+        init_board(board);
+        draw_board(board);
+        //start_game
+        
 
         // Update game state
         // Check for game over condition
