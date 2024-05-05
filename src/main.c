@@ -70,7 +70,6 @@ int main()
 	draw_board(board);
 
 	int out = 0;
-	int diff = 0;
 	while (1) {
 		if ((out = game_status(board, out)) == 1)
 			break;
@@ -95,7 +94,7 @@ int main()
             default:
                 break;
 		}
-		if (check_end_conditions(board) > 3 && (diff = compare_board(board, prev_board)))
+		if (compare_board(board, prev_board))
 			spawn_new_tile(board);
 		draw_board(board);
 	}
