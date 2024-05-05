@@ -14,6 +14,8 @@ int main()
     noecho();
 	curs_set(0);
 	keypad(stdscr, TRUE);
+	start_color();
+    init_colors();
 	
 	draw_board(board);
 

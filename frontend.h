@@ -9,19 +9,20 @@
 
 # define BOARD_SIZE 4
 
-# define COLOR_TWO 8
-# define COLOR_FOUR 9
-# define COLOR_EIGHT 10
-# define COLOR_SIXTEEN 11
-# define COLOR_THIRTY2 12
-# define COLOR_SIXTY4 13
-# define COLOR_ONE28 14
-# define COLOR_TWO56 15
-# define COLOR_FIVE12 16
-# define COLOR_TEN24 17
-# define COLOR_TWENTY48 18
-# define COLOR_EMPTY 19
+# define COLOR_EMPTY 8
+# define COLOR_TWO 9
+# define COLOR_FOUR 10
+# define COLOR_EIGHT 11
+# define COLOR_SIXTEEN 12
+# define COLOR_THIRTY2 13
+# define COLOR_SIXTY4 14
+# define COLOR_ONE28 15
+# define COLOR_TWO56 16
+# define COLOR_FIVE12 17
+# define COLOR_TEN24 18
+# define COLOR_TWENTY48 19
 
 void draw_board(int board[][BOARD_SIZE]);
+void init_colors();
 
 #endif

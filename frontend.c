@@ -73,13 +73,13 @@ void hexToRGB(const char* hexColor, int* r, int* g, int* b) {
 void init_colors() {
     int r, g, b;
     hexToRGB("#cdc1b4", &r, &g, &b);
-    init_color(COLOR_EMPTY, r*3*3, g*3*3, b*3*3);
+    init_color(COLOR_EMPTY, r*3, g*3, b*3);
     init_pair(COLOR_EMPTY, COLOR_EMPTY, COLOR_EMPTY);
     hexToRGB("#eee4da", &r, &g, &b);
-    init_color(COLOR_TWO, r*3*3, g*3*3, b*3*3);
+    init_color(COLOR_TWO, r*3, g*3, b*3);
     init_pair(COLOR_TWO, COLOR_TWO, COLOR_TWO);
     hexToRGB("#ede0c8", &r, &g, &b);
-    init_color(COLOR_FOUR, r*3*3, g*3*3, b*3*3);
+    init_color(COLOR_FOUR, r*3, g*3, b*3);
     init_pair(COLOR_FOUR, COLOR_FOUR, COLOR_FOUR);
     hexToRGB("#f2b179", &r, &g, &b);
     init_color(COLOR_EIGHT, r*3, g*3, b*3);
@@ -132,6 +132,85 @@ int digit_count(int n) {
     return result;
 }
 
+void activate_color(int number, int activate) {
+    if (activate) {
+        if (number == 0) {
+            attron(COLOR_PAIR(COLOR_EMPTY));
+        }
+        else if (number == 2) {
+            attron(COLOR_PAIR(COLOR_TWO));
+        }
+        else if (number == 4) {
+            attron(COLOR_PAIR(COLOR_FOUR));
+        }
+        else if (number == 8) {
+            attron(COLOR_PAIR(COLOR_EIGHT));
+        }
+        else if (number == 16) {
+            attron(COLOR_PAIR(COLOR_SIXTEEN));
+        }
+        else if (number == 32) {
+            attron(COLOR_PAIR(COLOR_THIRTY2));
+        }
+        else if (number == 64) {
+            attron(COLOR_PAIR(COLOR_SIXTY4));
+        }
+        else if (number == 128) {
+            attron(COLOR_PAIR(COLOR_ONE28));
+        }
+        else if (number == 256) {
+            attron(COLOR_PAIR(COLOR_TWO56));
+        }
+        else if (number == 512) {
+            attron(COLOR_PAIR(COLOR_FIVE12));
+        }
+        else if (number == 1024) {
+            attron(COLOR_PAIR(COLOR_TEN24));
+        }
+        else if (number >= 2048) {
+            attron(COLOR_PAIR(COLOR_TWENTY48));
+        }
+    }
+    else {
+        if (number == 0) {
+            attroff(COLOR_PAIR(COLOR_EMPTY));
+        }
+        else if (number == 2) {
+            attroff(COLOR_PAIR(COLOR_TWO));
+        }
+        else if (number == 4) {
+            attroff(COLOR_PAIR(COLOR_FOUR));
+        }
+        else if (number == 8) {
+            attroff(COLOR_PAIR(COLOR_EIGHT));
+        }
+        else if (number == 16) {
+            attroff(COLOR_PAIR(COLOR_SIXTEEN));
+        }
+        else if (number == 32) {
+            attroff(COLOR_PAIR(COLOR_THIRTY2));
+        }
+        else if (number == 64) {
+            attroff(COLOR_PAIR(COLOR_SIXTY4));
+        }
+        else if (number == 128) {
+            attroff(COLOR_PAIR(COLOR_ONE28));
+        }
+        else if (number == 256) {
+            attroff(COLOR_PAIR(COLOR_TWO56));
+        }
+        else if (number == 512) {
+            attroff(COLOR_PAIR(COLOR_FIVE12));
+        }
+        else if (number == 1024) {
+            attroff(COLOR_PAIR(COLOR_TEN24));
+        }
+        else if (number >= 2048) {
+            attroff(COLOR_PAIR(COLOR_TWENTY48));
+        }
+    }
+}
+
 void draw_board(int board[][BOARD_SIZE]) {
     int height, width;
     getmaxyx(stdscr, height, width);
@@ -142,6 +221,14 @@ void draw_board(int board[][BOARD_SIZE]) {
 
     // Clear the current grid
     clear();
+
+    activate_color(0, 1);
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            mvaddch(y, x, ' '); // Fill screen with spaces
+        }
+    }
+    activate_color(0, 0);
 
     if (height < BOARD_SIZE*2 + 2) {
         mvprintw(0 , 0, "smoll");
@@ -155,9 +242,11 @@ void draw_board(int board[][BOARD_SIZE]) {
             // Calculate the position of each cell
             int x = cell_width / 2 + j * cell_width;
             int y = cell_height / 2 + i * cell_height;
-
+            
+            activate_color(2, 1);
             // Draw the cell
             mvaddch(y, x, '#');
+
 
             // Draw horizontal line to the right
             if (j < BOARD_SIZE) {
@@ -170,6 +259,7 @@ void draw_board(int board[][BOARD_SIZE]) {
                 int next_y = cell_height / 2 + (i + 1) * cell_height;
                 mvvline(y + 1, x, '|', next_y - y - 1);
             }
+            activate_color(2, 0);
 
             // Draw the number in the cell
             if (i < BOARD_SIZE && j < BOARD_SIZE){
@@ -185,11 +275,21 @@ void draw_board(int board[][BOARD_SIZE]) {
                         y_offset = 0;
                         for (int k = 0; k < size; k++) {
                                 if (board[i][j] != 0){
-                                    attron(COLOR_PAIR(COLOR_FIVE12));
-                                    mvprintw(y + cell_height / 2 - size / 2 + y_offset ,
-                                        x + x_offset-size/2 + cell_width/2 + (count*(size + 2))/2 - size/2,
-                                            "%s", ascii_art[(temp % 10) * size + k]);
-                                    attroff(COLOR_PAIR(COLOR_FIVE12));
+                                    for (size_t z = 0; z < strlen(ascii_art[(temp % 10) * size + k]); z++)
+                                    {
+                                        if (ascii_art[(temp % 10) * size + k][z] != ' ')
+                                            activate_color(board[i][j], 1);
+                                        else
+                                            activate_color(0, 1);
+
+                                        mvprintw(y + cell_height / 2 - size / 2 + y_offset ,
+                                        z + x + x_offset-size/2 + cell_width/2 + (count*(size + 2))/2 - size/2,
+                                            "%c", ascii_art[(temp % 10) * size + k][z]);
+                                        if (ascii_art[(temp % 10) * size + k][z] != ' ')
+                                            activate_color(board[i][j], 0);
+                                        else
+                                            activate_color(0, 0);
+                                    }
                                 }
                                 y_offset += 1;
                         }
@@ -202,49 +302,3 @@ void draw_board(int board[][BOARD_SIZE]) {
     }
     refresh();
 }
-
-// int main() {
-//     initscr();
-//     start_color();
-//     init_colors();
-//     raw();
-//     noecho();
-
-    
-
-//     int board[BOARD_SIZE][BOARD_SIZE] = {10, 10, 10, 100, 32, 64, 128, 256, 512, 1024, 2048, 65536, 8192, 16384, 32768, 4096};
-//     //  int board[BOARD_SIZE][BOARD_SIZE] = {2048};
-//     init_board(board);
-
-//     while (1) {
-//         clear();
-//         draw_board(board);
-//         napms(100);
-        
-        
-//         int ch = getch();
-//         switch (ch) {
-//             case KEY_UP:
-//                 // Move tiles up
-//                 break;
-//             case KEY_DOWN:
-//                 // Move tiles down
-//                 break;
-//             case KEY_LEFT:
-//                 // Move tiles left
-//                 break;
-//             case KEY_RIGHT:
-//                 // Move tiles right
-//                 break;
-//             case 'q':
-//                 endwin();
-//                 return 0;
-//             default:
-//                 break;
-//         }
-//         refresh();
-//     }
-//     getch();
-//     endwin();
-//     return 0;
-// }
