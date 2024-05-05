@@ -15,75 +15,14 @@
 
 void draw_board(int board[][BOARD_SIZE]) 
 {
+	clear();
+	// int x = 0, y = 0;
     for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-				printf("%i  ", board[i][j]);
+                mvprintw(i * 2 + 1, j * 6 + 1, "%d", board[i][j]);
             }
-				printf("\n");
         }
-				printf("\n\n");
-
 }
-
-
-// int (*move_up(int board[][4]))[BOARD_SIZE]
-// {
-// 	int x = 0;
-// 	int y = 0;
-// 	int i = 1;
-
-// 	while (x < 4)
-// 	{
-// 		y = 0;
-// 		while (y < 4)
-// 		{
-// 			if (!board[y][x])
-// 			{
-// 				i = 1;
-// 				printf("x = %i, y = %i, i = %i\n", x, y, i);
-// 				while ((y+i) < 4 && !board[y+i][x])
-// 					i++;
-// 				if( y+i < 4 && board[y+i][x])
-// 				{
-// 					board[y][x] = board[y+i][x];
-// 					board[y+i][x] = 0;
-// 				}
-// 			}
-// 			y++;			
-// 		}
-// 		x++;		
-// 	}
-// 	return (board);
-// }
-
-// int (*move_down(int board[][4]))[BOARD_SIZE]
-// {
-// 	int x = 0;
-// 	int y = 3;
-// 	int i = 1;
-// 	while (x < 4)
-// 	{
-// 		y = 3;
-// 		while (y > 0)
-// 		{
-// 			if (!board[y][x])
-// 			{
-// 				i = 1;
-// 				while ((y-i) > -1 && !board[y-i][x])
-// 					i++;
-// 				if(y-i >= 0 && board[y-i][x])
-// 				{
-// 					board[y][x] = board[y-i][x];
-// 					board[y-i][x] = 0;
-// 					printf("here\n");
-// 				}
-// 			}
-// 			y--;			
-// 		}
-// 		x++;		
-// 	}
-// 	return (board);
-// }
 
 int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
 {
@@ -120,6 +59,7 @@ int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 	int i = 1;
 	int op = (y == UP_Y? 1 : -1);
 	int y_start = y;
+
 	
 	while (x < BOARD_SIZE)
 	{
@@ -143,21 +83,6 @@ int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 	}
 	return (board);
 }
-
-		
-
-// int (*merge_up(int board[][4], int x_pos, int y_pos, int found))[BOARD_SIZE]
-// {
-
-// 	if (y_pos > 0 && board[--y_pos][x_pos] == found)
-// 	{
-// 		//merging here
-// 		board[y_pos][x_pos] = 2 * found;
-// 		board[y_pos + 1][x_pos] = 0;
-// 		return (board);
-// 	}
-// 	return (board);
-// }
 
 int (*merge_up_down(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE]
 {
@@ -196,16 +121,14 @@ int (*merge_left_right(int board[][4], int x_pos, int y_pos, int found, int dir)
 }
 
 
-int search_tiles(int board[][4])
+int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, int))[], int(*(*move_tiles)(int[][4], int, int))[] , int dir)
 {
+	clear();
+    mvprintw(10, 10, "%s", "searching tiles");
+	refresh();
 	int x = 0;
 	int y = 0;
-	//up direction
-	// board = move_up(board);
-	// board = move_down(board);
-	// board = move_up_down(board, 0, DOWN_Y);
-	board = move_left_right(board, RIGHT_X, 0);
-	// draw_board(board);
+	board = move_tiles(board, dir, 0);
 	while (x < 4)
 	{
 		y = 0;
@@ -213,55 +136,18 @@ int search_tiles(int board[][4])
 		{
 			if (board[y][x])
 			{
-				// board = search_up(board, x, y, board[y][x]);
-				// board = merge_up_down(board, x, y, board[y][x], DOWN_Y);
-				board = merge_left_right(board, x, y, board[y][x], RIGHT_X);
-				draw_board(board);
+				board = merge_tiles(board, x, y, board[y][x], dir);
 			}
 			y++;
 		}
 		x++;
 	}
-	board = move_left_right(board, RIGHT_X, 0);
-	// board = move_up_down(board, 0, DOWN_Y);
-
-		// board = move_up(board);
-	// board = move_up(board);
-
-		draw_board(board);
+	board = move_tiles(board, dir, 0);
+	draw_board(board);
 
 	return(0);
 
 }
-
-// int search_up_down(int board[][4], int x, int y)
-// {
-	
-// }
-
-// int	start_game(int board[][BOARD_SIZE])
-// {
-
-//         int ch = getch();
-//         switch (ch) {
-//             case KEY_UP:
-//                 search_tiles(board, 0, UP_Y);
-//                 break;
-//             case KEY_DOWN:
-//                 // Move tiles down
-//                 break;
-//             case KEY_LEFT:
-//                 // Move tiles left
-//                 break;
-//             case KEY_RIGHT:
-//                 // Move tiles right
-//                 break;
-//             default:
-//                 break;
-// 		}
-// 	return (0);
-// }
-
 
 
 int main()
@@ -270,8 +156,36 @@ int main()
 						{0, 0, 0, 16},
 						{0, 8, 0, 16},
 						{2, 0, 0, 2}};
-	search_tiles(board);
 
+	initscr();
+    raw();
+    noecho();
+	curs_set(0);
+	keypad(stdscr, TRUE);
+
+	draw_board(board);
+	while (1) {
+		int ch = getch();
+        switch (ch) {
+            case KEY_UP:
+                search_tiles(board, merge_up_down, move_up_down, UP_Y);
+                break;
+            case KEY_DOWN:
+                search_tiles(board, merge_up_down, move_up_down, DOWN_Y);
+                break;
+            case KEY_LEFT:
+                search_tiles(board, merge_left_right, move_left_right, LEFT_X);
+                break;
+            case KEY_RIGHT:
+                search_tiles(board, merge_left_right, move_left_right, RIGHT_X);
+                break;
+			case 'q':
+				endwin();
+				return (0);
+            default:
+                break;
+		}
+	}
+	endwin();
 	return (0);
-
 }
