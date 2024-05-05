@@ -85,6 +85,25 @@ void draw_board(int board[][BOARD_SIZE])
 // 	return (board);
 // }
 
+int (*merge_left_right(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE]
+{
+	if (dir == LEFT_X && x_pos > 0 && board[y_pos][--x_pos] == found)
+	{
+		board[y_pos][x_pos] = 2 * found;
+		board[y_pos][x_pos+1] = 0;
+		return (board);
+	} 
+	else if (dir == RIGHT_X && x_pos < 3 && board[y_pos][++x_pos] == found)
+	{
+		printf("here\n");
+		board[y_pos][x_pos] = 2 * found;
+		board[y_pos][x_pos - 1] = 0;
+		return (board);
+	}
+	return (board);
+}
+
+
 int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
 {
 	int i = 1;
@@ -96,14 +115,17 @@ int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
 		x = x_start;
 		while (x < BOARD_SIZE && x >= RIGHT_LIMIT)
 		{
-			i = 1;
-			while ((x + i * op < BOARD_SIZE && x + i * op >= RIGHT_LIMIT) && !board[y][x + i * op])
-				i++;
-			if ((x + i * op < BOARD_SIZE) && (x + i * op >= RIGHT_LIMIT) && board[y][x + i * op])
+			if (!board[y][x])
 			{
-			printf("x = %i\n", x);
-				board[y][x] = board[y][x + i * op];
-				board[y][x + i * op] = 0;
+				i = 1;
+				while ((x + i * op < BOARD_SIZE && x + i * op >= RIGHT_LIMIT) && !board[y][x + i * op])
+					i++;
+				if ((x + i * op < BOARD_SIZE) && (x + i * op >= RIGHT_LIMIT) && board[y][x + i * op])
+				{
+				printf("x = %i\n", x);
+					board[y][x] = board[y][x + i * op];
+					board[y][x + i * op] = 0;
+				}
 			}
 			x += op;			
 		}
@@ -112,12 +134,57 @@ int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
 	return (board);
 }
 
+// int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
+// {
+// 	//my function
+// 	int i = 1;
+// 	int op = (y == UP_Y? 1 : -1);
+// 	int y_start = y;
+	
+// 	while (x < BOARD_SIZE)
+// 	{
+// 		y = y_start;
+// 		while (y < BOARD_SIZE && y >= DOWN_LIMIT)
+// 		{
+// 			if (!board[y][x])
+// 			{
+// 				i = 1;
+// 				while ((y + i*op < BOARD_SIZE && y + i * op >= DOWN_LIMIT) && !board[y + (i * op)][x])
+// 					i++;
+// 				if ((y + i * op < BOARD_SIZE) && (y + i * op >= DOWN_LIMIT) && board[y + (i * op)][x])
+// 				{
+// 					board[y][x] = board[y + (i * op)][x];
+// 					board[y + (i * op)][x] = 0;
+// 				}				
+// 			}
+// 			y += op;
+// 		}
+// 		x++;
+// 	}
+// 	return (board);
+// }
+
+		
+
+// int (*merge_up(int board[][4], int x_pos, int y_pos, int found))[BOARD_SIZE]
+// {
+
+// 	if (y_pos > 0 && board[--y_pos][x_pos] == found)
+// 	{
+// 		//merging here
+// 		board[y_pos][x_pos] = 2 * found;
+// 		board[y_pos + 1][x_pos] = 0;
+// 		return (board);
+// 	}
+// 	return (board);
+// }
+
 int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 {
 	int i = 1;
 	int op = (y == UP_Y? 1 : -1);
 	int y_start = y;
-	
+
 	while (x < BOARD_SIZE)
 	{
 		y = y_start;
@@ -141,23 +208,11 @@ int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 	return (board);
 }
 
-		
-
-// int (*merge_up(int board[][4], int x_pos, int y_pos, int found))[BOARD_SIZE]
-// {
-
-// 	if (y_pos > 0 && board[--y_pos][x_pos] == found)
-// 	{
-// 		//merging here
-// 		board[y_pos][x_pos] = 2 * found;
-// 		board[y_pos + 1][x_pos] = 0;
-// 		return (board);
-// 	}
-// 	return (board);
-// }
 
 int (*merge_up_down(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE]
 {
+
+	//my function
 	if (dir == UP_Y && y_pos > 0 && board[--y_pos][x_pos] == found)
 	{
 		board[y_pos][x_pos] = 2 * found;
@@ -182,8 +237,8 @@ int search_tiles(int board[][4])
 	//up direction
 	// board = move_up(board);
 	// board = move_down(board);
-	// board = move_up_down(board, 0, DOWN_Y);
-	board = move_left_right(board, RIGHT_X, 0);
+	board = move_up_down(board, 0, DOWN_Y);
+	// board = move_left_right(board, RIGHT_X, 0);
 	// draw_board(board);
 	while (x < 4)
 	{
@@ -200,7 +255,7 @@ int search_tiles(int board[][4])
 		}
 		x++;
 	}
-	// board = move_up_down(board, 0, DOWN_Y);
+	board = move_up_down(board, 0, DOWN_Y);
 
 		// board = move_up(board);
 	// board = move_up(board);
