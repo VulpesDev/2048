@@ -99,13 +99,12 @@ int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 			if (!board[y][x])
 			{
 				i = 1;
-				while (((y_start == UP_Y) || (y_start == DOWN_Y && ((y + (i * op)) >= DOWN_LIMIT))) && y + ((i+1) * op) < BOARD_SIZE && !board[y + (i * op)][x])
+				while (((y_start == UP_Y  && ((y + ((i+1) * op)) < BOARD_SIZE )) || (y_start == DOWN_Y && ((y + (i * op)) >= DOWN_LIMIT)))  && ((y + ((i+1) * op)) < BOARD_SIZE ) && !board[y + (i * op)][x])
 				{
 					printf("y = %i\n", y);
 				printf("y + i = %i, y + i*op = %i\n\n", y+i, y+ (i *op));
 					i++;
 				}	
-				// i--;
 				printf(" value = %i\n", board[y + (i * op)][x]);
 				if (((y+i < UP_LIMIT) || (y + (i *op) >= DOWN_LIMIT)) && board[y + (i * op)][x])
 				{
@@ -142,8 +141,8 @@ int search_tiles(int board[][4])
 	//up direction
 	// board = move_up(board);
 	// board = move_down(board);
-	// board = move_up_down(board, 0, UP_Y);
-	// draw_board(board);
+	board = move_up_down(board, 0, UP_Y);
+	draw_board(board);
 	while (x < 4)
 	{
 		y = 0;
@@ -159,9 +158,9 @@ int search_tiles(int board[][4])
 		x++;
 	}
 		// board = move_up(board);
-	board = move_up_down(board, 0, UP_Y);
+	// board = move_up_down(board, 0, UP_Y);
 
-		draw_board(board);
+		// draw_board(board);
 
 	return(0);
 
