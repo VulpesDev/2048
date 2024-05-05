@@ -150,25 +150,25 @@ typedef struct s_vector {
     int y;
 } t_vector;
 
-void init_board(int board[][BOARD_SIZE]) {
-    srand(time(NULL));
+// void init_board(int board[][BOARD_SIZE]) {
+//     srand(time(NULL));
     
-    t_vector sq1, sq2;
-    sq2.x = 0, sq2.y =0;
-    sq1.x = rand() % BOARD_SIZE;
-    sq1.y = rand() % BOARD_SIZE;
-    while (sq2.x == sq1.x)
-        sq2.x = rand() % BOARD_SIZE;
-    while (sq2.y == sq1.y)
-        sq2.y = rand() % BOARD_SIZE;
+//     t_vector sq1, sq2;
+//     sq2.x = 0, sq2.y =0;
+//     sq1.x = rand() % BOARD_SIZE;
+//     sq1.y = rand() % BOARD_SIZE;
+//     while (sq2.x == sq1.x)
+//         sq2.x = rand() % BOARD_SIZE;
+//     while (sq2.y == sq1.y)
+//         sq2.y = rand() % BOARD_SIZE;
 
-    // for (int i = 0; i < BOARD_SIZE; i++) {
-    //     for (int j = 0; j < BOARD_SIZE; j++) {
-    //         if ((i == sq1.x && j == sq1.y) || (i == sq2.x && j == sq2.y))
-    //             board[i][j] = rand() % 6 == 0 ? 4 : 2;
-    //     }
-    // }
-}
+//     // for (int i = 0; i < BOARD_SIZE; i++) {
+//     //     for (int j = 0; j < BOARD_SIZE; j++) {
+//     //         if ((i == sq1.x && j == sq1.y) || (i == sq2.x && j == sq2.y))
+//     //             board[i][j] = rand() % 6 == 0 ? 4 : 2;
+//     //     }
+//     // }
+// }
 
 // void draw_board(int board[][BOARD_SIZE]) {
 //     clear();
@@ -242,11 +242,11 @@ void draw_board(int board[][BOARD_SIZE]) {
                         y_offset = 0;
                         for (int k = 0; k < size; k++) {
                                 if (board[i][j] != 0){
-                                    attron(COLOR_PAIR(COLOR_FIVE12));
+                                    // attron(COLOR_PAIR(COLOR_FIVE12));
                                     mvprintw(y + cell_height / 2 - size / 2 + y_offset ,
                                         x + x_offset-size/2 + cell_width/2 + (count*(size + 2))/2 - size/2,
                                             "%s", ascii_art[(temp % 10) * size + k]);
-                                    attroff(COLOR_PAIR(COLOR_FIVE12));
+                                    // attroff(COLOR_PAIR(COLOR_FIVE12));
                                 }
                                 y_offset += 1;
                         }
@@ -260,48 +260,48 @@ void draw_board(int board[][BOARD_SIZE]) {
     refresh();
 }
 
-int main() {
-    initscr();
-    start_color();
-    init_colors();
-    raw();
-    noecho();
+// int main() {
+//     initscr();
+//     start_color();
+//     init_colors();
+//     raw();
+//     noecho();
 
     
 
-    int board[BOARD_SIZE][BOARD_SIZE] = {10, 10, 10, 100, 32, 64, 128, 256, 512, 1024, 2048, 65536, 8192, 16384, 32768, 4096};
-    //  int board[BOARD_SIZE][BOARD_SIZE] = {2048};
-    init_board(board);
+//     int board[BOARD_SIZE][BOARD_SIZE] = {10, 10, 10, 100, 32, 64, 128, 256, 512, 1024, 2048, 65536, 8192, 16384, 32768, 4096};
+//     //  int board[BOARD_SIZE][BOARD_SIZE] = {2048};
+//     init_board(board);
 
-    while (1) {
-        clear();
-        draw_board(board);
-        napms(100);
+//     while (1) {
+//         clear();
+//         draw_board(board);
+//         napms(100);
         
         
-        int ch = getch();
-        switch (ch) {
-            case KEY_UP:
-                // Move tiles up
-                break;
-            case KEY_DOWN:
-                // Move tiles down
-                break;
-            case KEY_LEFT:
-                // Move tiles left
-                break;
-            case KEY_RIGHT:
-                // Move tiles right
-                break;
-            case 'q':
-                endwin();
-                return 0;
-            default:
-                break;
-        }
-        refresh();
-    }
-    getch();
-    endwin();
-    return 0;
-}
+//         int ch = getch();
+//         switch (ch) {
+//             case KEY_UP:
+//                 // Move tiles up
+//                 break;
+//             case KEY_DOWN:
+//                 // Move tiles down
+//                 break;
+//             case KEY_LEFT:
+//                 // Move tiles left
+//                 break;
+//             case KEY_RIGHT:
+//                 // Move tiles right
+//                 break;
+//             case 'q':
+//                 endwin();
+//                 return 0;
+//             default:
+//                 break;
+//         }
+//         refresh();
+//     }
+//     getch();
+//     endwin();
+//     return 0;
+// }

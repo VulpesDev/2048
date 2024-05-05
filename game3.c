@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <time.h>
+#include "frontend.h"
 
 #define BOARD_SIZE 4
 #define RIGHT_X 3
@@ -20,15 +21,15 @@
 #define L 0
 #define R 1
 
-void draw_board(int board[][BOARD_SIZE]) 
-{
-	// int x = 0, y = 0;
-    for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                mvprintw(i * 2 + 1, j * 6 + 1, "%d", board[i][j]);
-            }
-        }
-}
+// void draw_board(int board[][BOARD_SIZE]) 
+// {
+// 	// int x = 0, y = 0;
+//     for (int i = 0; i < BOARD_SIZE; i++) {
+//             for (int j = 0; j < BOARD_SIZE; j++) {
+//                 mvprintw(i * 2 + 1, j * 6 + 1, "%d", board[i][j]);
+//             }
+//         }
+// }
 
 int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
 {
@@ -219,10 +220,7 @@ void spawn_new_tile(int board[][4])
 
 int main()
 {
-    int board[BOARD_SIZE][BOARD_SIZE] = {{2, 0, 0, 2},
-										{16, 0, 16, 2},
-										{16, 8, 0, 2},
-										{2, 2, 2, 2}};
+    int board[BOARD_SIZE][BOARD_SIZE] = {0};
 	init_board(board);
 
 	initscr();
@@ -254,11 +252,9 @@ int main()
 		int ch = getch();
         switch (ch) {
             case KEY_UP:
-			printf("keyup\n");
                 search_tiles(board, merge_up_down, move_up_down, 0, UP_Y, U);
                 break;
             case KEY_DOWN:
-				printf("key down");
                 search_tiles(board, merge_up_down, move_up_down, 0, DOWN_Y, D);
                 break;
             case KEY_LEFT:
