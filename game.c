@@ -40,9 +40,10 @@ int (*move_up(int board[][4]))[BOARD_SIZE]
 			if (!board[y][x])
 			{
 				i = 1;
+				printf("x = %i, y = %i, i = %i\n", x, y, i);
 				while ((y+i) < 4 && !board[y+i][x])
 					i++;
-				if(y+i < 4 && board[y+i][x])
+				if( y+i < 4 && board[y+i][x])
 				{
 					board[y][x] = board[y+i][x];
 					board[y+i][x] = 0;
@@ -94,26 +95,23 @@ int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 	while (x < BOARD_SIZE)
 	{
 		y = y_start;
-		while (((y < BOARD_SIZE) && y_start == UP_Y) || ((y_start == DOWN_Y && (y >= DOWN_LIMIT)) && (y < BOARD_SIZE)))
+		while ((y < BOARD_SIZE && y_start == UP_Y) || (y_start == DOWN_Y && y >= DOWN_LIMIT))
 		{
 			if (!board[y][x])
 			{
 				i = 1;
-				while (((y_start == UP_Y) || (y_start == DOWN_Y && ((y + (i * op)) >= DOWN_LIMIT))) && y + ((i+1) * op) < BOARD_SIZE && !board[y + (i * op)][x])
+				printf("x = %i, y = %i, i = %i, op = %i, y_start = %i\n", x, y, i, op, y_start);
+				while ((y_start == UP_Y &&  y + i*op < BOARD_SIZE) || (y_start == DOWN_Y && y + i * op >= DOWN_LIMIT) && !board[y + (i * op)][x])
 				{
 					printf("y = %i\n", y);
-				printf("y + i = %i, y + i*op = %i\n\n", y+i, y+ (i *op));
 					i++;
 				}	
-				// i--;
-				printf(" value = %i\n", board[y + (i * op)][x]);
-				if (((y+i < UP_LIMIT) || (y + (i *op) >= DOWN_LIMIT)) && board[y + (i * op)][x])
+				if ((y_start == UP_Y && y + i*op < BOARD_SIZE) || (y_start == DOWN_Y && y + i * op >= DOWN_LIMIT) && board[y + (i * op)][x])
 				{
 					board[y][x] = board[y + (i * op)][x];
 					board[y + (i * op)][x] = 0;
 				}				
 			}
-				// printf("y + i = %i, y + i*op = %i\n\n", y+i, y+ (i *op));
 			y += op;
 		}
 		x++;
@@ -159,7 +157,7 @@ int search_tiles(int board[][4])
 		x++;
 	}
 		// board = move_up(board);
-	board = move_up_down(board, 0, UP_Y);
+	board = move_up(board);
 
 		draw_board(board);
 
