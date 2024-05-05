@@ -94,9 +94,11 @@ int (*merge_left_right(int board[][4], int x_pos, int y_pos, int found, int dir)
 	return (board);
 }
 
-
 int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, int))[], int(*(*move_tiles)(int[][4], int, int))[] , int dir_x, int dir_y, int cur_move)
 {
+	int prev_board[BOARD_SIZE][BOARD_SIZE] = {0};
+	copy_board(board, prev_board);
+
 	clear();
 	refresh();
 	int x = dir_x;
@@ -117,7 +119,8 @@ int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, in
 	}
 	board = move_tiles(board, dir_x, dir_y);
 	draw_board(board);
-	spawn_new_tile(board);
+	if (compare_board(board, prev_board))
+		spawn_new_tile(board);
 	return(0);
 
 }

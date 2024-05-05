@@ -1,8 +1,26 @@
 #include "algorithm.h"
 #include "frontend.h"
 #include "grid_utility.h"
+#include <ncurses.h>
 
-
+int game_status(int board[][BOARD_SIZE], int out)
+{
+	switch (check_end_conditions(board)) {
+		case 0:
+			break;
+		case 1:
+			mvprintw(10, 10, "%s", "YOU WIN");
+			refresh();
+			break;
+		case -1:
+			mvprintw(10, 10, "%s", "YOU LOSE");
+			refresh();
+			out = 1;
+			return (out);
+			break;
+	}
+	return (0);
+}
 
 int main() {
     int board[BOARD_SIZE][BOARD_SIZE] = {0};
@@ -23,23 +41,9 @@ int main() {
         draw_board(board);
         napms(100);
         
-		int out  = 0;
-        if (out)
+		if (game_status(board, 0))
 			break;
-		switch (check_end_conditions(board)) {
-			case 0:
-				break;
-			case 1:
-				mvprintw(10, 10, "%s", "YOU WIN");
-				refresh();
-				break;
-			case -1:
-				mvprintw(10, 10, "%s", "YOU LOSE");
-				refresh();
-				out = 1;
-				break;
-		}
-
+		
         int ch = getch();
         switch (ch) {
             case KEY_UP:

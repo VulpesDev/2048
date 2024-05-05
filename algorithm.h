@@ -33,7 +33,6 @@ typedef struct s_vector {
     int y;
 } t_vector;
 
-int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, int))[], int(*(*move_tiles)(int[][4], int, int))[] , int dir_x, int dir_y, int cur_move);
 int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE];
 int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE];
 int (*merge_up_down(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE];

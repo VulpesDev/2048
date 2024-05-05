@@ -1,7 +1,41 @@
 
 #include "grid_utility.h"
 
-int check_end_conditions(int board[][4]) {
+void copy_board(int board[][BOARD_SIZE], int new_board[][BOARD_SIZE])
+{
+	int y = 0;
+	int x = 0;
+	while (y < BOARD_SIZE)
+	{
+		while (x < BOARD_SIZE)
+		{
+			new_board[y][x] = board[y][x];
+			x++;
+		}
+		y++;
+	}
+}
+
+int compare_board(int board[][BOARD_SIZE], int prev_board[][BOARD_SIZE])
+{
+	int y = 0;
+	int x = 0;
+	while (y < BOARD_SIZE)
+	{
+		x = 0;
+		while (x < BOARD_SIZE)
+		{
+			if (board[y][x] != prev_board[y][x])
+				return (1);
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+int check_end_conditions(int board[][4])
+{
     int end_cond = 0, has_empty = 0, can_combine = 0;
 
 	for (int i = 0; i < 4; i++) {
@@ -9,9 +43,9 @@ int check_end_conditions(int board[][4]) {
 			if (board[i][j] == WIN_VALUE)
 				end_cond = 1;
 			if (board[i][j] == 0)
-				has_empty = 1;
+				has_empty = 3;
 			if ((j < 3 && board[i][j] == board[i][j + 1]) || (i < 3 && board[i][j] == board[i + 1][j])) {
-				can_combine = 1;
+				can_combine = 2;
 			}
 		}
 	}
@@ -19,7 +53,7 @@ int check_end_conditions(int board[][4]) {
 		return (1);
 	}
 	else if (has_empty || can_combine) {
-		return (0);
+		return (has_empty + can_combine);
 	}
 	return (-1);
 }
@@ -47,12 +81,15 @@ void init_board(int board[][BOARD_SIZE])
 
 void spawn_new_tile(int board[][4]) 
 {
-	int x = rand() % BOARD_SIZE;
-	int y = rand() % BOARD_SIZE;
-	while (board[y][x] != 0)
+	if (check_end_conditions(board) >= 3)
 	{
-		x = rand() % BOARD_SIZE;
-		y = rand() % BOARD_SIZE;
+		int x = rand() % BOARD_SIZE;
+		int y = rand() % BOARD_SIZE;
+		while (board[y][x] != 0)
+		{
+			x = rand() % BOARD_SIZE;
+			y = rand() % BOARD_SIZE;
+		}
+		board[y][x] = 2;
 	}
-	board[y][x] = 2;
 }

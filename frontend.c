@@ -65,12 +65,14 @@ char ascii_art[][11] = {
 };
 
 // Function to convert hex color to RGB
-void hexToRGB(const char* hexColor, int* r, int* g, int* b) {
+void hexToRGB(const char* hexColor, int* r, int* g, int* b)
+{
     *r = 0; *g = 0; *b = 0; 
     sscanf(hexColor, "#%02x%02x%02x", r, g, b);
 }
 
-void init_colors() {
+void init_colors()
+{
     int r, g, b;
     hexToRGB("#cdc1b4", &r, &g, &b);
     init_color(COLOR_EMPTY, r*3, g*3, b*3);
