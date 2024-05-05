@@ -119,7 +119,7 @@ int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, in
 	}
 	board = move_tiles(board, dir_x, dir_y);
 	draw_board(board);
-	if (compare_board(board, prev_board))
+	if (compare_board(board, prev_board) && check_empty(board))
 		spawn_new_tile(board);
 	return(0);
 

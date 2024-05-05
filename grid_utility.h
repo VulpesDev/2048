@@ -28,5 +28,6 @@ int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, in
 
 void copy_board(int board[][BOARD_SIZE], int new_board[][BOARD_SIZE]);
 int compare_board(int board[][BOARD_SIZE], int prev_board[][BOARD_SIZE]);
+int check_empty(int board[][BOARD_SIZE]);
 
 #endif

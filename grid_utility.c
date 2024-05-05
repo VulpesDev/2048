@@ -7,6 +7,7 @@ void copy_board(int board[][BOARD_SIZE], int new_board[][BOARD_SIZE])
 	int x = 0;
 	while (y < BOARD_SIZE)
 	{
+		x = 0;
 		while (x < BOARD_SIZE)
 		{
 			new_board[y][x] = board[y][x];
@@ -32,6 +33,18 @@ int compare_board(int board[][BOARD_SIZE], int prev_board[][BOARD_SIZE])
 		y++;
 	}
 	return (0);
+}
+
+int check_empty(int board[][BOARD_SIZE])
+{
+	int has_empty =	0;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (board[i][j] == 0)
+				has_empty = 1;
+		}
+			}
+	return (has_empty);
 }
 
 int check_end_conditions(int board[][4])
@@ -81,8 +94,8 @@ void init_board(int board[][BOARD_SIZE])
 
 void spawn_new_tile(int board[][4]) 
 {
-	if (check_end_conditions(board) >= 3)
-	{
+	// if (check_end_conditions(board) != 3)
+	// {
 		int x = rand() % BOARD_SIZE;
 		int y = rand() % BOARD_SIZE;
 		while (board[y][x] != 0)
@@ -91,5 +104,5 @@ void spawn_new_tile(int board[][4])
 			y = rand() % BOARD_SIZE;
 		}
 		board[y][x] = 2;
-	}
+	// }
 }
