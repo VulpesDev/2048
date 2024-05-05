@@ -177,6 +177,24 @@ int (*merge_up_down(int board[][4], int x_pos, int y_pos, int found, int dir))[B
 	return (board);
 }
 
+int (*merge_left_right(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE]
+{
+	if (dir == LEFT_X && x_pos > 0 && board[y_pos][--x_pos] == found)
+	{
+		board[y_pos][x_pos] = 2 * found;
+		board[y_pos][x_pos+1] = 0;
+		return (board);
+	} 
+	else if (dir == RIGHT_X && x_pos < 3 && board[y_pos][++x_pos] == found)
+	{
+		printf("here\n");
+		board[y_pos][x_pos] = 2 * found;
+		board[y_pos][x_pos - 1] = 0;
+		return (board);
+	}
+	return (board);
+}
+
 
 int search_tiles(int board[][4])
 {
@@ -197,12 +215,14 @@ int search_tiles(int board[][4])
 			{
 				// board = search_up(board, x, y, board[y][x]);
 				// board = merge_up_down(board, x, y, board[y][x], DOWN_Y);
+				board = merge_left_right(board, x, y, board[y][x], RIGHT_X);
 				draw_board(board);
 			}
 			y++;
 		}
 		x++;
 	}
+	board = move_left_right(board, RIGHT_X, 0);
 	// board = move_up_down(board, 0, DOWN_Y);
 
 		// board = move_up(board);
