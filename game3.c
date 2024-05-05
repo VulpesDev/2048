@@ -123,21 +123,23 @@ int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, in
 {
 	clear();
 	refresh();
-	int x = 0;
-	int y = 0;
+	int x = dir_x;
+	int y = dir_y;
 	board = move_tiles(board, dir_x, dir_y);
-	while (x < 4)
+	while ((!dir_x && x < 4) || (dir_x && x  >= 0))
 	{
 		y = 0;
-		while (y < 4)
+		while ((!dir_y && y < 4) || (dir_y && y >= 0))
 		{
 			if (board[y][x])
 			{
 				board = merge_tiles(board, x, y, board[y][x], dir_y);
 			}
-			y++;
+			y += dir_y == 0? 1 : -1;
+			// y++;
 		}
-		x++;
+
+		x += dir_x == 0 ? 1 : -1;
 	}
 	board = move_tiles(board, dir_x, dir_y);
 	draw_board(board);
@@ -146,13 +148,18 @@ int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, in
 
 }
 
+// {  {2, 2, 2, 2},
+						// {0, 0, 0, 16},
+						// {0, 8, 0, 16},
+						// {2, 0, 0, 2}};
+
 
 int main()
 {
-    int board[][4] = {  {2, 2, 2, 2},
-						{0, 0, 0, 16},
-						{0, 8, 0, 16},
-						{2, 0, 0, 2}};
+    int board[][4] = {  {2, 0, 0, 2},
+						{16, 0, 16, 2},
+						{16, 8, 0, 2},
+						{2, 2, 2, 2}};
 
 	initscr();
     raw();
