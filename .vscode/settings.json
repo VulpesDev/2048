@@ -1,8 +1,5 @@
 {
     "files.associations": {
-        "unistd.h": "c",
-        "ncurses.h": "c",
-        "stdio.h": "c",
-        "string.h": "c"
+        "algorithm.h": "c"
     }
 }
