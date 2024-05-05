@@ -20,7 +20,6 @@
 
 void draw_board(int board[][BOARD_SIZE]) 
 {
-	// clear();
 	// int x = 0, y = 0;
     for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -104,8 +103,6 @@ int (*merge_up_down(int board[][4], int x_pos, int y_pos, int found, int dir))[B
 	return (board);
 }
 
-// right merge doesnt work correctly
-
 int (*merge_left_right(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE]
 {
 	if (dir == L && x_pos > 0 && board[y_pos][--x_pos] == found)
@@ -150,11 +147,6 @@ int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, in
 	return(0);
 
 }
-
-// {  {2, 2, 2, 2},
-						// {0, 0, 0, 16},
-						// {0, 8, 0, 16},
-						// {2, 0, 0, 2}};
 
 
 int main()
