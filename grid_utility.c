@@ -1,3 +1,4 @@
+
 #include "grid_utility.h"
 
 int check_end_conditions(int board[][4]) {
