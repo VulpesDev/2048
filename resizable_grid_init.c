@@ -6,6 +6,71 @@
 
 #include <stdio.h>
 
+// char ascii_art[][11] = {
+//     " ██████ ",
+//     "██    ██",
+//     "██    ██",
+//     "██    ██",
+//     " ██████ ",
+
+//     "    ██",
+//     "   ███",
+//     "    ██",
+//     "    ██",
+//     "    ██",
+    
+//     "██████ ",
+//     "     ██",
+//     " █████ ",
+//     "██     ",
+//     "███████",
+
+//     "██████ ",
+//     "     ██",
+//     "█████ ",
+//     "     ██",
+//     "██████ ",
+
+//     "██   ██",
+//     "██   ██",
+//     "███████",
+//     "     ██",
+//     "     ██",
+
+//     "███████",
+//     "██     ",
+//     "███████",
+//     "     ██",
+//     "███████",
+
+//     " ██████",
+//     "██     ",
+//     "███████ ",
+//     "██    ██",
+//     " ██████ ",
+
+//     "███████",
+//     "     ██",
+//     "    ██ ",
+//     "   ██  ",
+//     "   ██  ",
+
+//     " █████ ",
+//     "██   ██",
+//     " █████ ",
+//     "██   ██",
+//     " █████ ",
+
+//     " █████ ",
+//     "██   ██",
+//     " █████ ",
+//     "    ██ ",
+//     " █████ "
+
+// };
+
+
+
 char ascii_art[][11] = {
     " 0000",
     "00  00",
@@ -70,6 +135,9 @@ char ascii_art[][11] = {
     ""
 };
 
+
+                                                                           
+
 #include <string.h>
 #include <stdlib.h>
 char* print_ascii_digit(char array[][11], int num, int size, int cell_width, int cell_height) {
@@ -122,7 +190,7 @@ void init_board(int board[][BOARD_SIZE]) {
 
 int digit_count(int n) {
     int result = 0;
-    while (n % 10 != 0) {
+    while (n != 0) {
         n /= 10;
         result++;
     }
@@ -168,24 +236,25 @@ void draw_board(int board[][BOARD_SIZE]) {
                 mvvline(y + 1, x, '|', next_y - y - 1);
             }
             if (i < BOARD_SIZE && j < BOARD_SIZE){
-                int number = i * BOARD_SIZE + j + 1; // Calculate the number (1 to 9)
                 int size = 5;
                 int temp = board[i][j];
                 int y_offset = 0, x_offset = 0;
                 int count = digit_count(temp);
-                while (temp != 0) {
-                    //mvprintw(y_offset, 0, " %d %d: %d", temp, count, temp%10);
-                    // mvprintw(0, x_offset, "%d", temp%10);
-                    y_offset = 0;
-                    for (int k = 0; k < size; k++) {
-                            if (board[i][j] != 0){
-                                // mvprintw(y + cell_height / 2 - size / 2 + y_offset, x + cell_width/2 + (count-1)*size/2 + x_offset, "%s", ascii_art[(temp % 10) * size + k]);
-                                mvprintw(y + cell_height / 2 - size / 2 + y_offset , x + x_offset-size/2 + cell_width/2 + (count*(size + 2))/2 - size/2, "%s", ascii_art[(temp % 10) * size + k]);
-                            }
-                            y_offset += 1;
+                if (count*(size + 2) > cell_width || size > cell_height) {
+                    mvprintw(y + cell_height / 2 + y_offset , x + x_offset + cell_width/2, "%d", board[i][j]);
+                }
+                else {
+                    while (temp != 0) {
+                        y_offset = 0;
+                        for (int k = 0; k < size; k++) {
+                                if (board[i][j] != 0){
+                                    mvprintw(y + cell_height / 2 - size / 2 + y_offset , x + x_offset-size/2 + cell_width/2 + (count*(size + 2))/2 - size/2, "%s", ascii_art[(temp % 10) * size + k]);
+                                }
+                                y_offset += 1;
+                        }
+                        temp /= 10;
+                        x_offset -= size + 2;
                     }
-                    temp /= 10;
-                    x_offset -= size + 2;
                 }
             }
         }       
@@ -200,7 +269,7 @@ int main() {
     raw();
     noecho();
 
-    int board[BOARD_SIZE][BOARD_SIZE] = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 65536, 8192, 16384, 32768, 4096};
+    int board[BOARD_SIZE][BOARD_SIZE] = {10, 10, 10, 100, 32, 64, 128, 256, 512, 1024, 2048, 65536, 8192, 16384, 32768, 4096};
     //  int board[BOARD_SIZE][BOARD_SIZE] = {2048};
     init_board(board);
 
