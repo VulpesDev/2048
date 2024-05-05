@@ -15,9 +15,13 @@
 #define RIGHT_LIMIT 0
 #define LEFT_LIMIT 4
 
+#define U 0
+#define D 1
+#define L 0
+#define R 1
+
 void draw_board(int board[][BOARD_SIZE]) 
 {
-	clear();
 	// int x = 0, y = 0;
     for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -44,7 +48,6 @@ int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
 					i++;
 				if ((x + i * op < BOARD_SIZE) && (x + i * op >= RIGHT_LIMIT) && board[y][x + i * op])
 				{
-				printf("x = %i\n", x);
 					board[y][x] = board[y][x + i * op];
 					board[y][x + i * op] = 0;
 				}
@@ -62,7 +65,6 @@ int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 	int op = (y == UP_Y? 1 : -1);
 	int y_start = y;
 
-	
 	while (x < BOARD_SIZE)
 	{
 		y = y_start;
@@ -88,15 +90,14 @@ int (*move_up_down(int board[][4], int x, int y))[BOARD_SIZE]
 
 int (*merge_up_down(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE]
 {
-	if (dir == UP_Y && y_pos > 0 && board[--y_pos][x_pos] == found)
+	if (dir == U && y_pos > 0 && board[--y_pos][x_pos] == found)
 	{
 		board[y_pos][x_pos] = 2 * found;
 		board[y_pos + 1][x_pos] = 0;
 		return (board);
 	} 
-	else if (dir == DOWN_Y && y_pos < 3 && board[++y_pos][x_pos] == found)
+	else if (dir == D && y_pos < 3 && board[++y_pos][x_pos] == found)
 	{
-		printf("here\n");
 		board[y_pos][x_pos] = 2 * found;
 		board[y_pos - 1][x_pos] = 0;
 		return (board);
@@ -106,15 +107,14 @@ int (*merge_up_down(int board[][4], int x_pos, int y_pos, int found, int dir))[B
 
 int (*merge_left_right(int board[][4], int x_pos, int y_pos, int found, int dir))[BOARD_SIZE]
 {
-	if (dir == LEFT_X && x_pos > 0 && board[y_pos][--x_pos] == found)
+	if (dir == L && x_pos > 0 && board[y_pos][--x_pos] == found)
 	{
 		board[y_pos][x_pos] = 2 * found;
 		board[y_pos][x_pos+1] = 0;
 		return (board);
 	} 
-	else if (dir == RIGHT_X && x_pos < 3 && board[y_pos][++x_pos] == found)
+	else if (dir == R && x_pos < 3 && board[y_pos][++x_pos] == found)
 	{
-		printf("here\n");
 		board[y_pos][x_pos] = 2 * found;
 		board[y_pos][x_pos - 1] = 0;
 		return (board);
@@ -123,31 +123,33 @@ int (*merge_left_right(int board[][4], int x_pos, int y_pos, int found, int dir)
 }
 
 
-int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, int))[], int(*(*move_tiles)(int[][4], int, int))[] , int dir)
+int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, int))[], int(*(*move_tiles)(int[][4], int, int))[] , int dir_x, int dir_y, int cur_move)
 {
 	clear();
-    mvprintw(10, 10, "%s", "searching tiles");
 	refresh();
-	int x = 0;
-	int y = 0;
-	board = move_tiles(board, dir, 0);
-	while (x < 4)
+	int x = dir_x;
+	int y = dir_y;
+	board = move_tiles(board, dir_x, dir_y);
+	while ((!dir_x && x < 4) || (dir_x && x  >= 0))
 	{
-		y = 0;
-		while (y < 4)
+		y = dir_y == 0? 0 : 3;
+		while ((!dir_y && y < 4) || (dir_y && y >= 0))
 		{
 			if (board[y][x])
 			{
-				board = merge_tiles(board, x, y, board[y][x], dir);
+				board = merge_tiles(board, x, y, board[y][x], cur_move);
 			}
-			y++;
+			y += dir_y == 0? 1 : -1;
 		}
-		x++;
+		x += dir_x == 0 ? 1 : -1;
 	}
-	board = move_tiles(board, dir, 0);
+	board = move_tiles(board, dir_x, dir_y);
+	draw_board(board);
+
 	return(0);
 
 }
+
 
 enum e_const
 {
@@ -217,10 +219,10 @@ void spawn_new_tile(int board[][4])
 
 int main()
 {
-    int board[BOARD_SIZE][BOARD_SIZE] = {{2, 4, 2, 4},
-										 {8, 2048, 4, 2},
-										 {8, 4, 2, 4},
-										 {4, 2, 4, 2}};
+    int board[BOARD_SIZE][BOARD_SIZE] = {{2, 0, 0, 2},
+										{16, 0, 16, 2},
+										{16, 8, 0, 2},
+										{2, 2, 2, 2}};
 	init_board(board);
 
 	initscr();
@@ -252,16 +254,18 @@ int main()
 		int ch = getch();
         switch (ch) {
             case KEY_UP:
-                search_tiles(board, merge_up_down, move_up_down, UP_Y);
+			printf("keyup\n");
+                search_tiles(board, merge_up_down, move_up_down, 0, UP_Y, U);
                 break;
             case KEY_DOWN:
-                search_tiles(board, merge_up_down, move_up_down, DOWN_Y);
+				printf("key down");
+                search_tiles(board, merge_up_down, move_up_down, 0, DOWN_Y, D);
                 break;
             case KEY_LEFT:
-                search_tiles(board, merge_left_right, move_left_right, LEFT_X);
+                search_tiles(board, merge_left_right, move_left_right, LEFT_X, 0, L);
                 break;
             case KEY_RIGHT:
-                search_tiles(board, merge_left_right, move_left_right, RIGHT_X);
+                search_tiles(board, merge_left_right, move_left_right, RIGHT_X, 0, R);
                 break;
 			case 'q':
 				endwin();
