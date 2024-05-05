@@ -165,9 +165,9 @@ int check_end_conditions(int board[][4]) {
 			if (board[i][j] == WIN_VALUE)
 				end_cond = 1;
 			if (board[i][j] == 0)
-				has_empty = 1;
+				has_empty = 3;
 			if ((j < 3 && board[i][j] == board[i][j + 1]) || (i < 3 && board[i][j] == board[i + 1][j])) {
-				can_combine = 1;
+				can_combine = 2;
 			}
 		}
 	}
@@ -175,7 +175,7 @@ int check_end_conditions(int board[][4]) {
 		return (1);
 	}
 	else if (has_empty || can_combine) {
-		return (0);
+		return (has_empty + can_combine);
 	}
 	return (-1);
 }
@@ -234,7 +234,9 @@ int main()
 	int out = 0;
 	while (1) {
 		if (out)
+		{
 			break;
+		}
 		switch (check_end_conditions(board)) {
 			case 0:
 				break;
@@ -248,7 +250,6 @@ int main()
 				out = 1;
 				break;
 		}
-
 		int ch = getch();
         switch (ch) {
             case KEY_UP:
@@ -269,10 +270,16 @@ int main()
             default:
                 break;
 		}
-		spawn_new_tile(board);
+		if (check_end_conditions(board) >= 3)
+			spawn_new_tile(board);
 		draw_board(board);
 	}
-	getch();
+	int key = getch();
+	mvprintw(12, 10, "Press 'q' to quit");
+	refresh();
+	while (key != 'q') {
+    	key = getch();
+	}
 	endwin();
 	return (0);
 }

@@ -132,7 +132,7 @@ char ascii_art[][11] = {
 
 #include <string.h>
 #include <stdlib.h>
-char* print_ascii_digit(char array[][11], int num, int size, int cell_width, int cell_height) {
+char* print_ascii_digit(char array[][11], int num, int size) {
     char *result = calloc(1, sizeof(char) * size*size*2);
     if (result == NULL) {
         perror("malloc");
