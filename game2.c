@@ -96,14 +96,17 @@ int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
 		x = x_start;
 		while (x < BOARD_SIZE && x >= RIGHT_LIMIT)
 		{
-			i = 1;
-			while ((x + i * op < BOARD_SIZE && x + i * op >= RIGHT_LIMIT) && !board[y][x + i * op])
-				i++;
-			if ((x + i * op < BOARD_SIZE) && (x + i * op >= RIGHT_LIMIT) && board[y][x + i * op])
+			if (!board[y][x])
 			{
-			printf("x = %i\n", x);
-				board[y][x] = board[y][x + i * op];
-				board[y][x + i * op] = 0;
+				i = 1;
+				while ((x + i * op < BOARD_SIZE && x + i * op >= RIGHT_LIMIT) && !board[y][x + i * op])
+					i++;
+				if ((x + i * op < BOARD_SIZE) && (x + i * op >= RIGHT_LIMIT) && board[y][x + i * op])
+				{
+				printf("x = %i\n", x);
+					board[y][x] = board[y][x + i * op];
+					board[y][x + i * op] = 0;
+				}
 			}
 			x += op;			
 		}
