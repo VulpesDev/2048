@@ -1,4 +1,5 @@
 #include "algorithm.h"
+#include "grid_utility.h"
 
 
 int (*move_left_right(int board[][4], int x, int y))[BOARD_SIZE]
@@ -116,7 +117,7 @@ int search_tiles(int board[][4], int(*(*merge_tiles)(int[][4], int, int, int, in
 	}
 	board = move_tiles(board, dir_x, dir_y);
 	draw_board(board);
-
+	spawn_new_tile(board);
 	return(0);
 
 }
