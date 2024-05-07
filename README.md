@@ -29,7 +29,7 @@ sudo yum install ncurses-devel       # RedHat/CentOS/Fedora
 Once the dependency is installed, clone the repository and build the project:
 <sub>Bash</sub>
 ```
-git clone https://github.com/VulpesDev/2048 ~/bin/Vulpneko && cd ~/bin/Vulpnesko
+git clone https://github.com/VulpesDev/2048 ~/bin/Vulpneko && cd ~/bin/Vulpneko
 make
 ```
 <sub>Use code with caution.</sub>
