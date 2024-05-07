@@ -1,6 +1,7 @@
 # 2048
 
 A classic tile-matching puzzle game recreated for the terminal using ncurses.
+![2048](./img/img1.png)
 
 Table of Contents
 
@@ -9,7 +10,6 @@ Table of Contents
 - [Contributing](#contributing)
 - [License](#license)
 - [Authors](#authors)
-- [Conclusion](#conclusion)
 
 
 ## Installation
@@ -17,31 +17,32 @@ Table of Contents
 This project requires the ncurses library. You can install it using your system's package manager.
 
 Linux/macOS:
-Bash
-
+<sub>Bash</sub>
+```
 sudo apt-get install libncurses5-dev  # Debian/Ubuntu
+```
+```
 sudo yum install ncurses-devel       # RedHat/CentOS/Fedora
-
-Use code with caution.
+```
+<sub>Use code with caution.</sub>
 
 Once the dependency is installed, clone the repository and build the project:
-Bash
-
+<sub>Bash</sub>
+```
 git clone https://github.com/VulpesDev/2048 && cd 2048
 make
-
-Use code with caution.
+```
+<sub>Use code with caution.</sub>
 
 This will create an executable named 2048 in the current directory.
 
 ## Usage
 
 Run the game with the following command:
-Bash
-
+<sub>Bash</sub>
+```
 ./2048
-
-Use code with caution.
+```
 
 Controls:
 
@@ -62,10 +63,12 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Authors
 
-    VulpesDev
-    dafneko
+[dafneko](https://github.com/dafneko)
+
+[VulpesDev](https://github.com/vulpesdev)
 
 ## Links
 
-    Wikipedia - 2048 (video game): https://en.wikipedia.org/wiki/2048_%28video_game%29
-    Wikipedia - Ncurses: https://en.wikipedia.org/wiki/Ncurses
+[Wikipedia - 2048 (video game)](https://en.wikipedia.org/wiki/2048_%28video_game%29)
+
+[Wikipedia - Ncurses](https://en.wikipedia.org/wiki/Ncurses)
