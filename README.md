@@ -1,6 +1,6 @@
 # 2048
 
-A classic tile-matching puzzle game recreated for the terminal using ncurses.
+A classic tile-matching puzzle game recreated for the terminal using ncurses, within 48 hours.
 ![2048](./img/img1.png)
 
 Table of Contents
